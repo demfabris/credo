@@ -1,0 +1,16 @@
+[user]
+  email = demfabris@gmail.com
+  username = demfabris
+  name = Fabricio Dematte
+[credential]
+  helper = store
+[core]
+  editor = nvim
+[alias]
+  s = !git status
+  conflicted = !nvim +Conflicted
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
