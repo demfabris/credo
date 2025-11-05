@@ -2,7 +2,7 @@ export ZSH="$HOME/.oh-my-zsh"
 . "$HOME/.cargo/env"
 
 ZSH_THEME="robbyrussell"
-plugins=(git)
+plugins=(git fzf zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -16,6 +16,7 @@ alias python='python3'
 alias gem='gemini'
 
 alias vim='nvim'
+alias codex='codex --search'
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -41,3 +42,12 @@ export CPPFLAGS="-I /opt/homebrew/opt/openjdk@17/include"
 export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+[[ -f ~/.zshrc.d/niceties.zsh ]] && source ~/.zshrc.d/niceties.zsh
+
+# bun completions
+[ -s "/Users/demfabris/.bun/_bun" ] && source "/Users/demfabris/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
