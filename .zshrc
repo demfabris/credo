@@ -16,7 +16,7 @@ alias python='python3'
 alias gem='gemini'
 
 alias vim='nvim'
-alias codex='codex --search'
+# alias codex='codex --search'
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -51,3 +51,15 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/Users/demfabris/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/demfabris/.antigravity/antigravity/bin:$PATH"
