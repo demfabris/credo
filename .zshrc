@@ -8,6 +8,8 @@ source $ZSH/oh-my-zsh.sh
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+export FZF_DEFAULT_OPTS="--height 100% --layout=reverse --border --preview 'bat --color=always --style=numbers --line-range :500 {}'"
+
 alias gl="git log --oneline --decorate --graph --all"
 alias gs="git status"
 alias l='y'
