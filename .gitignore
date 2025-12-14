@@ -26,3 +26,9 @@
 !.tmux/**
 !.tmux/*/**
 
+!CLAUDE.md
+!.claude/
+!.claude/settings.json
+!.claude/commands/
+!.claude/commands/*
+

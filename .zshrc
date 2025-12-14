@@ -16,9 +16,7 @@ alias l='y'
 alias ll='ls -lah'
 alias python='python3'
 alias gem='gemini'
-
 alias vim='nvim'
-# alias codex='codex --search'
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -62,6 +60,3 @@ case ":$PATH:" in
 esac
 # pnpm end
 export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
-
-# Added by Antigravity
-export PATH="/Users/demfabris/.antigravity/antigravity/bin:$PATH"
