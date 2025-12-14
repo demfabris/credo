@@ -35,7 +35,11 @@ set -g pane-border-style 'fg=#273747'
 set -g pane-active-border-style 'fg=#E6B450'
 set -g message-style 'bg=#E6B450,fg=#0A0E14,bold'
 set -g message-command-style 'bg=#E6B450,fg=#0A0E14,bold'
-set -g mode-style 'bg=#95E6CB,fg=#0A0E14'
+set -g mode-style 'bg=#273747,fg=#B3B1AD'
+
+# Search highlighting (/ in copy-mode)
+set -g copy-mode-match-style 'bg=#273747,fg=#B3B1AD'
+set -g copy-mode-current-match-style 'bg=#E6B450,fg=#0A0E14,bold'
 
 # Clock (prefix + t)
 set -g clock-mode-colour '#E6B450'
