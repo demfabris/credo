@@ -1,34 +1,68 @@
+# Ignore everything by default
 *
-.DS_Store
+
+# But not this file
 !.gitignore
+
+# ─────────────────────────────────────────────
+# Shell
+# ─────────────────────────────────────────────
+!.zshrc
+!.zshenv
+!.profile
 !.gitconfig
 
-!.zshrc
-!.profile
-!.zshenv
-
-!.config/
-!.config/nvim/
-!.config/nvim/*
-!.config/nvim/*/**
-
-!.config/yazi/
-!.config/yazi/*
-!.config/yazi/*/**
-
-!.config/blink/
-!.config/blink/*
-!.config/blink/*/**
-
-
+# ─────────────────────────────────────────────
+# Tmux
+# ─────────────────────────────────────────────
 !.tmux.conf
 !.tmux/
 !.tmux/**
-!.tmux/*/**
 
+# ─────────────────────────────────────────────
+# Claude Code
+# ─────────────────────────────────────────────
 !CLAUDE.md
 !.claude/
 !.claude/settings.json
 !.claude/commands/
-!.claude/commands/*
+!.claude/commands/**
 
+# ─────────────────────────────────────────────
+# .config/ tools
+# ─────────────────────────────────────────────
+!.config/
+
+# Neovim
+!.config/nvim/
+!.config/nvim/**
+
+# Terminal
+!.config/ghostty/
+!.config/ghostty/**
+
+# File managers & tools
+!.config/yazi/
+!.config/yazi/**
+!.config/lsd/
+!.config/lsd/**
+
+# Shells
+!.config/fish/
+!.config/fish/**
+
+# Editors
+!.config/zed/
+!.config/zed/**
+
+# Multiplexers
+!.config/zellij/
+!.config/zellij/**
+
+# GitHub CLI (exclude hosts.yml - has OAuth token)
+!.config/gh/
+!.config/gh/config.yml
+
+# Other
+!.config/blink/
+!.config/blink/**

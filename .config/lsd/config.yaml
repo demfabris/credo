@@ -1,0 +1,41 @@
+# lsd configuration - Ayu Dark themed
+# https://github.com/lsd-rs/lsd
+
+classic: false
+blocks:
+  - permission
+  - user
+  - group
+  - size
+  - date
+  - name
+
+color:
+  when: auto
+  theme: custom
+
+date: relative
+dereference: false
+display: all
+icons:
+  when: auto
+  theme: fancy
+  separator: " "
+
+layout: grid
+recursion:
+  enabled: false
+  depth: 3
+
+size: default
+permission: rwx
+sorting:
+  column: name
+  reverse: false
+  dir-grouping: first
+
+no-symlink: false
+total-size: false
+hyperlink: never
+symlink-arrow: ⇒
+header: false

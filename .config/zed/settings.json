@@ -1,0 +1,67 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "diagnostics": {
+    "inline": {
+      "enabled": true
+    }
+  },
+  "use_system_window_tabs": true,
+  "bottom_dock_layout": "contained",
+  "tabs": {
+    "show_diagnostics": "all",
+    "file_icons": false,
+    "git_status": true
+  },
+  "tab_bar": {
+    "show_tab_bar_buttons": true,
+    "show": true
+  },
+  "title_bar": {
+    "show_menus": false,
+    "show_branch_name": true,
+    "show_branch_icon": false
+  },
+  "status_bar": {
+    "cursor_position_button": true
+  },
+  "terminal": {
+    "button": false
+  },
+  "debugger": {
+    "button": false
+  },
+  "buffer_line_height": "standard",
+  "buffer_font_weight": 400.0,
+  "ui_font_family": "Helvetica",
+  "agent": {
+    "model_parameters": [],
+    "enable_feedback": false
+  },
+  "agent_buffer_font_size": 14.0,
+  "agent_ui_font_size": 16.0,
+  "buffer_font_family": "FantasqueSansM Nerd Font",
+  "icon_theme": {
+    "mode": "system",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  "vim_mode": true,
+  "ui_font_size": 16,
+  "buffer_font_size": 14.0,
+  "theme": {
+    "mode": "system",
+    "light": "Ayu Light",
+    "dark": "Ayu Dark"
+  }
+}

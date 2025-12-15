@@ -1,0 +1,58 @@
+# Font
+font-family = FantasqueSansM Nerd Font Mono
+font-size = 13
+font-thicken = true
+
+# Ayu Dark theme
+background = 0d1017
+foreground = bfbdb6
+
+# Normal colors
+palette = 0=#01060e
+palette = 1=#f07178
+palette = 2=#aad94c
+palette = 3=#ffb454
+palette = 4=#59c2ff
+palette = 5=#d2a6ff
+palette = 6=#95e6cb
+palette = 7=#c7c7c7
+
+# Bright colors
+palette = 8=#686868
+palette = 9=#f07178
+palette = 10=#aad94c
+palette = 11=#ffb454
+palette = 12=#59c2ff
+palette = 13=#d2a6ff
+palette = 14=#95e6cb
+palette = 15=#f3f3f3
+
+# Cursor
+cursor-color = e6b450
+cursor-style = block
+cursor-style-blink = true
+
+# Selection
+selection-background = 1a1f29
+selection-foreground = bfbdb6
+
+# Window
+window-padding-x = 0
+window-padding-y = 4,0
+window-decoration = true
+
+# Misc
+copy-on-select = clipboard
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = 1
+
+# Allow apps to write to clipboard (OSC 52) - critical for tmux/SSH
+clipboard-read = allow
+clipboard-write = allow
+
+# tmux integration
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
+# macOS specifics (for tmux meta keys)
+macos-option-as-alt = true

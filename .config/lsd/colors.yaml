@@ -1,0 +1,47 @@
+# lsd colors - Ayu Dark theme
+# Matches tmux, Ghostty, and yazi color scheme
+
+user: '#BFBDB6'        # foreground
+group: '#636A72'       # comment gray
+permission:
+  read: '#AAD94C'      # green
+  write: '#FF8F40'     # orange
+  exec: '#F07178'      # red
+  exec-sticky: '#D2A6FF'
+  no-access: '#636A72'
+  octal: '#636A72'
+  acl: '#59C2FF'
+  context: '#59C2FF'
+
+date:
+  hour-old: '#AAD94C'  # green - fresh
+  day-old: '#BFBDB6'   # foreground
+  older: '#636A72'     # comment gray
+
+size:
+  none: '#636A72'
+  small: '#AAD94C'     # green
+  medium: '#E6B450'    # yellow
+  large: '#FF8F40'     # orange
+
+inode:
+  valid: '#D2A6FF'     # purple
+  invalid: '#636A72'
+
+links:
+  valid: '#D2A6FF'     # purple
+  invalid: '#F07178'   # red
+
+tree-edge: '#636A72'   # comment gray
+
+git-status:
+  default: '#636A72'
+  unmodified: '#636A72'
+  ignored: '#636A72'
+  new-in-index: '#AAD94C'      # green
+  new-in-workdir: '#AAD94C'
+  typechange: '#D2A6FF'        # purple
+  deleted: '#F07178'           # red
+  renamed: '#39BAE6'           # blue
+  modified: '#FF8F40'          # orange
+  conflicted: '#F07178'        # red
