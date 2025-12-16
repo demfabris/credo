@@ -49,17 +49,16 @@
     "ask": [],
     "defaultMode": "acceptEdits"
   },
+  "statusLine": {
+    "type": "command",
+    "command": "/bin/zsh /Users/demfabris/.claude/statusline.sh"
+  },
   "enabledPlugins": {
     "claude-mem@thedotmack": true,
     "dev-browser@dev-browser-marketplace": true,
     "learning-output-style@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "github@claude-plugins-official": true,
-    "figma-mcp@claude-plugins-official": true
-  },
-  "alwaysThinkingEnabled": false,
-  "statusLine": {
-    "type": "command",
-    "command": "input=$(cat); cwd=$(echo \"$input\" | jq -r '.workspace.current_dir'); cd \"$cwd\" 2>/dev/null; dir=$(basename \"$cwd\"); branch=$(git -c core.useReplaceRefs=false branch --show-current 2>/dev/null); if [ -n \"$branch\" ]; then if git -c core.useReplaceRefs=false diff-index --quiet HEAD -- 2>/dev/null; then status=\"\"; else status=\" ✗\"; fi; git_info=\" git:($branch)$status\"; else git_info=\"\"; fi; printf \"\\033[36m%s\\033[0m%s\" \"$dir\" \"$git_info\""
+    "context7@claude-plugins-official": true,
+    "example-skills@anthropic-agent-skills": true
   }
 }

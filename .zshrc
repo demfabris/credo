@@ -36,6 +36,9 @@ export EDITOR="nvim"
 export LANG=en_US.UTF-8
 export GIT_AUTHOR_NAME="Fabricio Dematte"
 
+# GitHub token for MCP servers (dynamically fetched from gh CLI)
+export GITHUB_PERSONAL_ACCESS_TOKEN="$(gh auth token 2>/dev/null)"
+
 export PATH="$PATH:~/Library/Android/sdk/emulator/"
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools
@@ -64,3 +67,5 @@ esac
 
 # zoxide (smarter cd)
 eval "$(zoxide init zsh)"
+
+export PATH="$PATH:$HOME/.local/bin"
