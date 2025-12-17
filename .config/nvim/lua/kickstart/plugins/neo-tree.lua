@@ -33,6 +33,13 @@ return {
         folder_closed = '',
         folder_open = '',
         folder_empty = '',
+        default = '',
+        highlight = 'NeoTreeFileIcon',
+      },
+      name = {
+        trailing_slash = false,
+        use_git_status_colors = true, -- Color names by git status
+        highlight = 'NeoTreeFileName',
       },
       modified = {
         symbol = '●',

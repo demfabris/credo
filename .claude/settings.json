@@ -70,7 +70,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -message 'Claude finished responding' -title 'Claude Code' -sound Ping"
+            "command": "bash ~/.claude/scripts/cc-notify-stop.sh"
           }
         ]
       }
@@ -81,7 +81,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -message 'Compacting conversation...' -title 'Claude Code' -sound Bottle"
+            "command": "~/.config/cc-notify/cc-notify send -t complete 'Context compacting...'"
           }
         ]
       }
