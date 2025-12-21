@@ -79,4 +79,5 @@
 !.config/blink/
 !.config/blink/**
 
+lazy-lock.json
 *.log
