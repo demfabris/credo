@@ -3,6 +3,70 @@
 --
 -- See the kickstart.nvim README for more information
 return {
+  -- Yazi file manager integration
+  {
+    'mikavilpas/yazi.nvim',
+    event = 'VeryLazy',
+    keys = {
+      { '-', '<cmd>Yazi<cr>', desc = 'Open yazi at current file' },
+      { '<leader>y', '<cmd>Yazi cwd<cr>', desc = 'Open yazi at cwd' },
+      { '<leader>Y', '<cmd>Yazi toggle<cr>', desc = 'Resume last yazi session' },
+    },
+    opts = {
+      open_for_directories = true, -- hijack netrw for directories
+      keymaps = {
+        show_help = '<f1>',
+        open_file_in_vertical_split = '<c-v>',
+        open_file_in_horizontal_split = '<c-s>',
+        open_file_in_tab = '<c-t>',
+        grep_in_directory = '<c-g>',
+        replace_in_directory = '<c-r>',
+        cycle_open_buffers = '<tab>',
+        copy_relative_path_to_selected_files = '<c-y>',
+        send_to_quickfix_list = '<c-q>',
+      },
+      floating_window_scaling_factor = 0.9,
+      yazi_floating_window_border = 'rounded',
+      hooks = {
+        yazi_opened = function(preselected_path, yazi_buffer_id, config)
+          -- Could add custom logic here
+        end,
+        yazi_closed_successfully = function(chosen_file, config, state)
+          -- Could add custom logic here
+        end,
+      },
+    },
+  },
+
+  -- Seamless navigation between tmux panes and neovim splits
+  {
+    'mrjones2014/smart-splits.nvim',
+    lazy = false,
+    keys = {
+      -- Navigation
+      { '<C-h>', function() require('smart-splits').move_cursor_left() end, desc = 'Move to left split/pane' },
+      { '<C-j>', function() require('smart-splits').move_cursor_down() end, desc = 'Move to below split/pane' },
+      { '<C-k>', function() require('smart-splits').move_cursor_up() end, desc = 'Move to above split/pane' },
+      { '<C-l>', function() require('smart-splits').move_cursor_right() end, desc = 'Move to right split/pane' },
+      -- Resizing (Alt + hjkl)
+      { '<A-h>', function() require('smart-splits').resize_left() end, desc = 'Resize split left' },
+      { '<A-j>', function() require('smart-splits').resize_down() end, desc = 'Resize split down' },
+      { '<A-k>', function() require('smart-splits').resize_up() end, desc = 'Resize split up' },
+      { '<A-l>', function() require('smart-splits').resize_right() end, desc = 'Resize split right' },
+      -- Swapping buffers between splits
+      { '<leader>wh', function() require('smart-splits').swap_buf_left() end, desc = 'Swap buffer left' },
+      { '<leader>wj', function() require('smart-splits').swap_buf_down() end, desc = 'Swap buffer down' },
+      { '<leader>wk', function() require('smart-splits').swap_buf_up() end, desc = 'Swap buffer up' },
+      { '<leader>wl', function() require('smart-splits').swap_buf_right() end, desc = 'Swap buffer right' },
+    },
+    opts = {
+      ignored_filetypes = { 'nofile', 'quickfix', 'prompt' },
+      ignored_buftypes = { 'NvimTree' },
+      default_amount = 3,
+      at_edge = 'wrap', -- or 'stop' if you don't want wrap-around
+    },
+  },
+
   {
     'supermaven-inc/supermaven-nvim',
     config = function()

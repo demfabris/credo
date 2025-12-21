@@ -82,12 +82,7 @@ vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- Split navigation handled by smart-splits.nvim (seamless tmux integration)
 
 -- [[ Basic Autocommands ]]
 -- Highlight when yanking (copying) text
@@ -246,6 +241,9 @@ require('lazy').setup({
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]ypeScript/[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>w', group = '[W]indow/Swap' },
+        { '<leader>y', desc = '[Y]azi (cwd)' },
+        { '<leader>Y', desc = '[Y]azi resume' },
       },
     },
   },
@@ -378,6 +376,7 @@ require('lazy').setup({
 
           -- Jump to the definition of the word under your cursor.
           --  To jump back, press <C-t>.
+          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
           map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
