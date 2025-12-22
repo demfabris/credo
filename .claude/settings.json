@@ -53,6 +53,28 @@
     "defaultMode": "acceptEdits"
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/bash ~/.claude/hooks/cc-notify-hook.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/bash ~/.claude/hooks/cc-notify-hook.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "WebSearch",
@@ -61,75 +83,6 @@
             "type": "command",
             "command": "python3 ~/.claude/hooks/gemini-search/websearch-intercept.py",
             "timeout": 180
-          }
-        ]
-      },
-      {
-        "matcher": "AskUserQuestion",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/bin/bash ~/.claude/hooks/ccnotify-interactive.sh",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "Read|Edit|Write|Bash|Grep|Glob|Task",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "CLAUDE_HOOK_TYPE=PreToolUse /bin/bash ~/.claude/hooks/tool-activity.sh",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "TodoWrite",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/bin/bash ~/.claude/hooks/todo-watch.sh",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Read|Edit|Write|Bash|Grep|Glob|Task",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "CLAUDE_HOOK_TYPE=PostToolUse /bin/bash ~/.claude/hooks/tool-activity.sh",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/bin/bash ~/.claude/hooks/file-changes.sh",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/bin/bash ~/.claude/hooks/notification-tts.sh",
-            "timeout": 30
-          },
-          {
-            "type": "command",
-            "command": "/bin/bash ~/.claude/hooks/notification-ccnotify.sh",
-            "timeout": 30
           }
         ]
       }
