@@ -1,5 +1,6 @@
 [mgr]
 show_hidden = true
+show_symlink = true
 linemode = "size"
 sort_by = "natural"
 sort_dir_first = true
@@ -52,6 +53,16 @@ rules = [
 ]
 
 [plugin]
+[[plugin.prepend_fetchers]]
+id = "git"
+name = "*"
+run = "git"
+
+[[plugin.prepend_fetchers]]
+id = "git"
+name = "*/"
+run = "git"
+
 prepend_previewers = [
   { name = "*.md", run = "glow" },
 ]

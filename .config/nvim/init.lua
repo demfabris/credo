@@ -72,6 +72,9 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Show [L]ine diagnostics' })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous [D]iagnostic' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next [D]iagnostic' })
 
 -- Quit terminal with Esc Esc
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
@@ -188,6 +191,15 @@ require('lazy').setup({
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      -- GitLens-style inline blame
+      current_line_blame = true,
+      current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = 'eol',
+        delay = 500,
+        ignore_whitespace = true,
+      },
+      current_line_blame_formatter = '<author>, <author_time:%R> • <summary>',
     },
   },
 
@@ -239,9 +251,11 @@ require('lazy').setup({
         { '<leader>g', group = '[G]it' },
         { '<leader>r', group = '[R]ust' },
         { '<leader>s', group = '[S]earch' },
+        { '<leader>S', group = '[S]pectre (Search/Replace)' },
         { '<leader>t', group = '[T]ypeScript/[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>w', group = '[W]indow/Swap' },
+        { '<leader>x', group = 'Trouble/Diagnosti[x]' },
         { '<leader>y', desc = '[Y]azi (cwd)' },
         { '<leader>Y', desc = '[Y]azi resume' },
       },
@@ -450,11 +464,11 @@ require('lazy').setup({
         end,
       })
 
-      -- Diagnostic Config
+      -- Diagnostic Config - clean squiggly lines, no inline spam
       vim.diagnostic.config {
         severity_sort = true,
-        float = { border = 'rounded', source = 'if_many' },
-        underline = { severity = vim.diagnostic.severity.ERROR },
+        float = { border = 'rounded', source = 'if_many', header = '', prefix = '' },
+        underline = true, -- Squiggly lines for all severities
         signs = vim.g.have_nerd_font and {
           text = {
             [vim.diagnostic.severity.ERROR] = '󰅚 ',
@@ -463,20 +477,16 @@ require('lazy').setup({
             [vim.diagnostic.severity.HINT] = '󰌶 ',
           },
         } or {},
-        virtual_text = {
-          source = 'if_many',
-          spacing = 2,
-          format = function(diagnostic)
-            local diagnostic_message = {
-              [vim.diagnostic.severity.ERROR] = diagnostic.message,
-              [vim.diagnostic.severity.WARN] = diagnostic.message,
-              [vim.diagnostic.severity.INFO] = diagnostic.message,
-              [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-          end,
-        },
+        virtual_text = false, -- YEETED - no more inline pollution
       }
+
+      -- Undercurl support (squiggly lines) - Ghostty handles this beautifully
+      vim.cmd [[
+        hi DiagnosticUnderlineError guisp=#F07178 gui=undercurl
+        hi DiagnosticUnderlineWarn guisp=#FFB454 gui=undercurl
+        hi DiagnosticUnderlineInfo guisp=#59C2FF gui=undercurl
+        hi DiagnosticUnderlineHint guisp=#95E6CB gui=undercurl
+      ]]
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
@@ -685,34 +695,6 @@ require('lazy').setup({
     },
   },
 
-  -- { -- Colorscheme
-  --   'Mofiqul/adwaita.nvim',
-  --   lazy = false,
-  --   priority = 1000,
-  --   opts = {
-  --     transparent = true,
-  --   },
-  --   config = function(_, opts)
-  --     local ok, adwaita = pcall(require, 'adwaita')
-  --     if ok then
-  --       adwaita.setup(opts)
-  --     end
-  --     vim.cmd.colorscheme 'adwaita'
-  --   end,
-  -- },
-  {
-    'mhartington/oceanic-next',
-    enabled = false,
-    lazy = false,
-    priority = 1000,
-    opts = {
-      transparent = true,
-    },
-    config = function()
-      vim.cmd.colorscheme 'OceanicNext'
-    end,
-  },
-
   {
     'Shatur/neovim-ayu',
     lazy = false,
@@ -785,11 +767,25 @@ require('lazy').setup({
     -- [[ Configure Treesitter ]]
     opts = {
       ensure_installed = {
-          'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline',
-          'query', 'vim', 'vimdoc', 'rust',
-          -- TypeScript/JavaScript ecosystem
-          'typescript', 'tsx', 'javascript', 'jsdoc', 'json',
-        },
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'rust',
+        -- TypeScript/JavaScript ecosystem
+        'typescript',
+        'tsx',
+        'javascript',
+        'jsdoc',
+        'json',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -805,10 +801,10 @@ require('lazy').setup({
 
   -- Extra
   -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
+  -- neo-tree YEETED - yazi gang 🦀
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   { import = 'custom.plugins' },

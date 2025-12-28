@@ -36,9 +36,10 @@ do_search() {
         return 0
     fi
 
-    # Run Gemini search
+    # Run Gemini search - explicitly tell Gemini to use web search
     local result
-    if ! result=$(gemini -y -o json "$query" 2>/dev/null); then
+    local search_prompt="Search the web for: $query. Provide a concise summary of the most relevant results."
+    if ! result=$(gemini -y -o json "$search_prompt" 2>/dev/null); then
         echo "Gemini search failed" >&2
         return 1
     fi

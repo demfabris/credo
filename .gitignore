@@ -21,6 +21,14 @@
 !.tmux/**
 
 # ─────────────────────────────────────────────
+# Gemini CLI (only config, NO auth/secrets)
+# ─────────────────────────────────────────────
+!.gemini/
+!.gemini/settings.json
+!.gemini/GEMINI.md
+# oauth_creds.json, google_accounts.json, installation_id stay ignored
+
+# ─────────────────────────────────────────────
 # Claude Code
 # ─────────────────────────────────────────────
 !CLAUDE.md

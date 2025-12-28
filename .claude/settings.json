@@ -93,7 +93,7 @@
     "command": "/bin/bash ~/.claude/scripts/statusline.sh"
   },
   "enabledPlugins": {
-    "claude-mem@thedotmack": false,
+    "claude-mem@thedotmack": true,
     "learning-output-style@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
     "context7@claude-plugins-official": true,

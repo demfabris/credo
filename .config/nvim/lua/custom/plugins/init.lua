@@ -9,6 +9,8 @@ return {
     event = 'VeryLazy',
     keys = {
       { '-', '<cmd>Yazi<cr>', desc = 'Open yazi at current file' },
+      { '<leader>e', '<cmd>Yazi<cr>', desc = 'File [E]xplorer (yazi)' },
+      { '<leader>E', '<cmd>Yazi cwd<cr>', desc = '[E]xplorer at cwd' },
       { '<leader>y', '<cmd>Yazi cwd<cr>', desc = 'Open yazi at cwd' },
       { '<leader>Y', '<cmd>Yazi toggle<cr>', desc = 'Resume last yazi session' },
     },
@@ -44,20 +46,92 @@ return {
     lazy = false,
     keys = {
       -- Navigation
-      { '<C-h>', function() require('smart-splits').move_cursor_left() end, desc = 'Move to left split/pane' },
-      { '<C-j>', function() require('smart-splits').move_cursor_down() end, desc = 'Move to below split/pane' },
-      { '<C-k>', function() require('smart-splits').move_cursor_up() end, desc = 'Move to above split/pane' },
-      { '<C-l>', function() require('smart-splits').move_cursor_right() end, desc = 'Move to right split/pane' },
+      {
+        '<C-h>',
+        function()
+          require('smart-splits').move_cursor_left()
+        end,
+        desc = 'Move to left split/pane',
+      },
+      {
+        '<C-j>',
+        function()
+          require('smart-splits').move_cursor_down()
+        end,
+        desc = 'Move to below split/pane',
+      },
+      {
+        '<C-k>',
+        function()
+          require('smart-splits').move_cursor_up()
+        end,
+        desc = 'Move to above split/pane',
+      },
+      {
+        '<C-l>',
+        function()
+          require('smart-splits').move_cursor_right()
+        end,
+        desc = 'Move to right split/pane',
+      },
       -- Resizing (Alt + hjkl)
-      { '<A-h>', function() require('smart-splits').resize_left() end, desc = 'Resize split left' },
-      { '<A-j>', function() require('smart-splits').resize_down() end, desc = 'Resize split down' },
-      { '<A-k>', function() require('smart-splits').resize_up() end, desc = 'Resize split up' },
-      { '<A-l>', function() require('smart-splits').resize_right() end, desc = 'Resize split right' },
+      {
+        '<A-h>',
+        function()
+          require('smart-splits').resize_left()
+        end,
+        desc = 'Resize split left',
+      },
+      {
+        '<A-j>',
+        function()
+          require('smart-splits').resize_down()
+        end,
+        desc = 'Resize split down',
+      },
+      {
+        '<A-k>',
+        function()
+          require('smart-splits').resize_up()
+        end,
+        desc = 'Resize split up',
+      },
+      {
+        '<A-l>',
+        function()
+          require('smart-splits').resize_right()
+        end,
+        desc = 'Resize split right',
+      },
       -- Swapping buffers between splits
-      { '<leader>wh', function() require('smart-splits').swap_buf_left() end, desc = 'Swap buffer left' },
-      { '<leader>wj', function() require('smart-splits').swap_buf_down() end, desc = 'Swap buffer down' },
-      { '<leader>wk', function() require('smart-splits').swap_buf_up() end, desc = 'Swap buffer up' },
-      { '<leader>wl', function() require('smart-splits').swap_buf_right() end, desc = 'Swap buffer right' },
+      {
+        '<leader>wh',
+        function()
+          require('smart-splits').swap_buf_left()
+        end,
+        desc = 'Swap buffer left',
+      },
+      {
+        '<leader>wj',
+        function()
+          require('smart-splits').swap_buf_down()
+        end,
+        desc = 'Swap buffer down',
+      },
+      {
+        '<leader>wk',
+        function()
+          require('smart-splits').swap_buf_up()
+        end,
+        desc = 'Swap buffer up',
+      },
+      {
+        '<leader>wl',
+        function()
+          require('smart-splits').swap_buf_right()
+        end,
+        desc = 'Swap buffer right',
+      },
     },
     opts = {
       ignored_filetypes = { 'nofile', 'quickfix', 'prompt' },
@@ -70,7 +144,7 @@ return {
   {
     'supermaven-inc/supermaven-nvim',
     config = function()
-      require('supermaven-nvim').setup({})
+      require('supermaven-nvim').setup {}
     end,
   },
 
@@ -131,20 +205,48 @@ return {
               vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'Rust: ' .. desc })
             end
             -- Rust-specific keymaps
-            map('<leader>re', function() vim.cmd.RustLsp('expandMacro') end, '[E]xpand macro')
-            map('<leader>rc', function() vim.cmd.RustLsp('openCargo') end, 'Open [C]argo.toml')
-            map('<leader>rp', function() vim.cmd.RustLsp('parentModule') end, '[P]arent module')
-            map('<leader>rr', function() vim.cmd.RustLsp('runnables') end, '[R]unnables')
-            map('<leader>rd', function() vim.cmd.RustLsp('debuggables') end, '[D]ebuggables')
-            map('<leader>rt', function() vim.cmd.RustLsp('testables') end, '[T]estables')
-            map('<leader>rm', function() vim.cmd.RustLsp('rebuildProcMacros') end, 'Rebuild proc [M]acros')
-            map('<leader>rk', function() vim.cmd.RustLsp { 'moveItem', 'up' } end, 'Move item up')
-            map('<leader>rj', function() vim.cmd.RustLsp { 'moveItem', 'down' } end, 'Move item down')
-            map('<leader>ra', function() vim.cmd.RustLsp('codeAction') end, 'Code [A]ction')
-            map('<leader>rh', function() vim.cmd.RustLsp { 'hover', 'actions' } end, '[H]over actions')
-            map('J', function() vim.cmd.RustLsp('joinLines') end, 'Join lines')
-            map('<leader>rE', function() vim.cmd.RustLsp('explainError') end, '[E]xplain error')
-            map('<leader>rD', function() vim.cmd.RustLsp('renderDiagnostic') end, 'Render [D]iagnostic')
+            map('<leader>re', function()
+              vim.cmd.RustLsp 'expandMacro'
+            end, '[E]xpand macro')
+            map('<leader>rc', function()
+              vim.cmd.RustLsp 'openCargo'
+            end, 'Open [C]argo.toml')
+            map('<leader>rp', function()
+              vim.cmd.RustLsp 'parentModule'
+            end, '[P]arent module')
+            map('<leader>rr', function()
+              vim.cmd.RustLsp 'runnables'
+            end, '[R]unnables')
+            map('<leader>rd', function()
+              vim.cmd.RustLsp 'debuggables'
+            end, '[D]ebuggables')
+            map('<leader>rt', function()
+              vim.cmd.RustLsp 'testables'
+            end, '[T]estables')
+            map('<leader>rm', function()
+              vim.cmd.RustLsp 'rebuildProcMacros'
+            end, 'Rebuild proc [M]acros')
+            map('<leader>rk', function()
+              vim.cmd.RustLsp { 'moveItem', 'up' }
+            end, 'Move item up')
+            map('<leader>rj', function()
+              vim.cmd.RustLsp { 'moveItem', 'down' }
+            end, 'Move item down')
+            map('<leader>ra', function()
+              vim.cmd.RustLsp 'codeAction'
+            end, 'Code [A]ction')
+            map('<leader>rh', function()
+              vim.cmd.RustLsp { 'hover', 'actions' }
+            end, '[H]over actions')
+            map('J', function()
+              vim.cmd.RustLsp 'joinLines'
+            end, 'Join lines')
+            map('<leader>rE', function()
+              vim.cmd.RustLsp 'explainError'
+            end, '[E]xplain error')
+            map('<leader>rD', function()
+              vim.cmd.RustLsp 'renderDiagnostic'
+            end, 'Render [D]iagnostic')
           end,
           default_settings = {
             ['rust-analyzer'] = {
@@ -175,7 +277,7 @@ return {
     event = { 'BufRead Cargo.toml' },
     tag = 'stable',
     config = function()
-      local crates = require('crates')
+      local crates = require 'crates'
       crates.setup {
         -- No cmp integration since we use blink.cmp
         completion = {
@@ -226,10 +328,14 @@ return {
       direction = 'float',
       float_opts = {
         border = 'rounded',
-        width = function() return math.floor(vim.o.columns * 0.85) end,
-        height = function() return math.floor(vim.o.lines * 0.8) end,
+        width = function()
+          return math.floor(vim.o.columns * 0.85)
+        end,
+        height = function()
+          return math.floor(vim.o.lines * 0.8)
+        end,
       },
-      shade_terminals = false,
+      shade_terminals = true,
     },
   },
 
@@ -246,6 +352,11 @@ return {
       -- Ctrl+Shift+Arrow for tab switching
       { '<C-S-Right>', '<CMD>BufferLineCycleNext<CR>', desc = 'Next buffer' },
       { '<C-S-Left>', '<CMD>BufferLineCyclePrev<CR>', desc = 'Previous buffer' },
+      -- Ctrl+Shift+H/L vim-style tab navigation
+      { '<C-S-H>', '<CMD>BufferLineCyclePrev<CR>', desc = 'Previous buffer' },
+      { '<C-S-L>', '<CMD>BufferLineCycleNext<CR>', desc = 'Next buffer' },
+      -- Quick close buffer (switches to prev buffer first to avoid closing nvim)
+      { '<leader>q', '<CMD>bp<bar>bd #<CR>', desc = 'Close current buffer' },
       -- Keep gt/gT for vim muscle memory
       { 'gt', '<CMD>BufferLineCycleNext<CR>', desc = 'Next buffer' },
       { 'gT', '<CMD>BufferLineCyclePrev<CR>', desc = 'Previous buffer' },
@@ -267,17 +378,16 @@ return {
         diagnostics = 'nvim_lsp',
         diagnostics_indicator = function(_, _, diag)
           local icons = { error = ' ', warning = ' ', hint = ' ', info = ' ' }
-          local ret = (diag.error and icons.error .. diag.error .. ' ' or '')
-            .. (diag.warning and icons.warning .. diag.warning or '')
+          local ret = (diag.error and icons.error .. diag.error .. ' ' or '') .. (diag.warning and icons.warning .. diag.warning or '')
           return vim.trim(ret)
         end,
         offsets = {
-          { filetype = 'neo-tree', text = 'Explorer', text_align = 'center', highlight = 'Directory' },
+          -- yazi is a floating window, no offset needed 🦀
         },
         show_buffer_close_icons = true,
         show_close_icon = false,
         separator_style = 'thin',
-        always_show_bufferline = false, -- Only show when 2+ buffers
+        always_show_bufferline = true, -- Only show when 2+ buffers
       },
     },
   },
@@ -290,17 +400,129 @@ return {
       user_default_options = {
         RGB = true,
         RRGGBB = true,
-        names = false,       -- "Blue" etc - disabled for perf
-        RRGGBBAA = true,     -- #RRGGBBAA
-        AARRGGBB = true,     -- 0xAARRGGBB
-        rgb_fn = true,       -- CSS rgb()
-        hsl_fn = true,       -- CSS hsl()
+        names = false, -- "Blue" etc - disabled for perf
+        RRGGBBAA = true, -- #RRGGBBAA
+        AARRGGBB = true, -- 0xAARRGGBB
+        rgb_fn = true, -- CSS rgb()
+        hsl_fn = true, -- CSS hsl()
         css = true,
         css_fn = true,
         mode = 'virtualtext', -- "background", "foreground", or "virtualtext"
         virtualtext = '■',
         virtualtext_inline = true,
         always_update = false,
+      },
+    },
+  },
+
+  -- ╭──────────────────────────────────────────────────────────╮
+  -- │                    VSCode-like Polish                    │
+  -- ╰──────────────────────────────────────────────────────────╯
+
+  -- Problems panel - VSCode's diagnostics view
+  {
+    'folke/trouble.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    cmd = 'Trouble',
+    keys = {
+      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (Trouble)' },
+      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer Diagnostics' },
+      { '<leader>xs', '<cmd>Trouble symbols toggle focus=false<cr>', desc = 'Symbols (Trouble)' },
+      { '<leader>xl', '<cmd>Trouble lsp toggle focus=false win.position=right<cr>', desc = 'LSP Definitions/References' },
+      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>', desc = 'Location List' },
+      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix List' },
+    },
+    opts = {},
+  },
+
+  -- Project-wide search & replace
+  {
+    'nvim-pack/nvim-spectre',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    keys = {
+      {
+        '<leader>S',
+        function()
+          require('spectre').toggle()
+        end,
+        desc = 'Toggle Spectre (Search & Replace)',
+      },
+      {
+        '<leader>Sw',
+        function()
+          require('spectre').open_visual { select_word = true }
+        end,
+        desc = 'Search current word',
+      },
+      {
+        '<leader>Sp',
+        function()
+          require('spectre').open_file_search { select_word = true }
+        end,
+        desc = 'Search in current file',
+      },
+    },
+    opts = {},
+  },
+
+  -- Toast notifications
+  {
+    'rcarriga/nvim-notify',
+    event = 'VeryLazy',
+    config = function()
+      local notify = require 'notify'
+      notify.setup {
+        background_colour = '#0d1017',
+        timeout = 3000,
+        max_width = 60,
+        render = 'wrapped-compact',
+        stages = 'fade_in_slide_out',
+        merge_duplicates = true,
+      }
+      vim.notify = notify
+    end,
+  },
+
+  -- Smooth scrolling
+  {
+    'karb94/neoscroll.nvim',
+    event = 'VeryLazy',
+    opts = {
+      mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>', 'zt', 'zz', 'zb' },
+      easing = 'linear',
+      duration_multiplier = 0.25, -- Snappy but smooth
+    },
+  },
+
+  -- Complete UI overhaul - command palette, better messages
+  {
+    'folke/noice.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'rcarriga/nvim-notify',
+    },
+    opts = {
+      lsp = {
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+          ['cmp.entry.get_documentation'] = true,
+        },
+        hover = { enabled = false }, -- Use native hover (we customized it)
+        signature = { enabled = false }, -- blink.cmp handles this
+      },
+      presets = {
+        bottom_search = true, -- Classic bottom search
+        command_palette = true, -- VSCode-style command line popup
+        long_message_to_split = true, -- Long messages go to split
+        lsp_doc_border = true, -- Borders on LSP docs
+      },
+      routes = {
+        -- Skip "written" messages
+        { filter = { event = 'msg_show', kind = '', find = 'written' }, opts = { skip = true } },
+        -- Skip search count messages (we have statusline for that)
+        { filter = { event = 'msg_show', kind = 'search_count' }, opts = { skip = true } },
       },
     },
   },
