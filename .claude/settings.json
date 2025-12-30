@@ -104,7 +104,8 @@
     "swift-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "figma@claude-plugins-official": true,
-    "explanatory-output-style@claude-plugins-official": true
+    "explanatory-output-style@claude-plugins-official": true,
+    "beads@beads-marketplace": true
   },
   "syntaxHighlightingDisabled": false
 }
