@@ -10,7 +10,16 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 [[ -f ~/.config/lsd/colors.zsh ]] && source ~/.config/lsd/colors.zsh
 
-export FZF_DEFAULT_OPTS="--height 100% --layout=reverse --border --preview 'bat --color=always --style=numbers --line-range :500 {}'"
+# Ayu Dark theme for fzf
+export FZF_DEFAULT_OPTS="
+  --height 100% --layout=reverse --border
+  --preview 'bat --color=always --style=numbers --line-range :500 {}'
+  --color=fg:#bfbdb6,bg:#0a0e14,hl:#c2a05c
+  --color=fg+:#bfbdb6,bg+:#2d3640,hl+:#e6b450
+  --color=info:#5c6773,prompt:#c2a05c,pointer:#c2a05c
+  --color=marker:#7e9350,spinner:#1f6f88,header:#5c6773
+  --color=border:#5c6773,gutter:#0a0e14
+"
 
 alias gl="git log --oneline --decorate --graph --all"
 alias gs="git status"

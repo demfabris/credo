@@ -101,10 +101,13 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
   group = vim.api.nvim_create_augroup('autoread-checktime', { clear = true }),
   command = 'checktime',
 })
-vim.api.nvim_create_autocmd('FileChangedShellPost', {
-  group = vim.api.nvim_create_augroup('autoread-notify', { clear = true }),
+-- Auto-reload files changed externally (even if buffer modified)
+-- Useful when Claude Code edits files while you have them open
+vim.api.nvim_create_autocmd('FileChangedShell', {
+  group = vim.api.nvim_create_augroup('autoread-force', { clear = true }),
   callback = function()
-    vim.notify('File changed on disk. Buffer reloaded.', vim.log.levels.WARN)
+    vim.cmd('edit!') -- Force reload, accepting external changes
+    vim.notify('File updated externally - reloaded', vim.log.levels.INFO)
   end,
 })
 
@@ -160,21 +163,51 @@ rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
 require('lazy').setup({
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
+  -- Snacks.nvim - folke's utility library (dashboard, terminal, etc.)
+  {
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    opts = {
+      dashboard = {
+        preset = {
+          keys = {
+            { icon = ' ', key = 'f', desc = 'Find File', action = ':Telescope find_files' },
+            { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
+            { icon = ' ', key = 'g', desc = 'Find Text', action = ':Telescope live_grep' },
+            { icon = ' ', key = 'r', desc = 'Recent Files', action = ':Telescope oldfiles' },
+            { icon = ' ', key = 'c', desc = 'Config', action = ':e $MYVIMRC' },
+            { icon = '󰒲 ', key = 'l', desc = 'Lazy', action = ':Lazy' },
+            { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
+          },
+          header = [[
+    ██████╗ ██████╗  ██████╗ ███╗   ███╗
+    ██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+    ██║  ██║██████╔╝██║   ██║██╔████╔██║
+    ██║  ██║██╔══██╗██║   ██║██║╚██╔╝██║
+    ██████╔╝██║  ██║╚██████╔╝██║ ╚═╝ ██║
+    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+      ]],
+        },
+        sections = {
+          { section = 'header' },
+          { section = 'keys', gap = 1, padding = 1 },
+          { section = 'startup' },
+        },
+      },
+    },
+  },
 
   -- Claude Code integration (it me 🤖)
   {
-    'greggh/claude-code.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    'coder/claudecode.nvim',
+    dependencies = { 'folke/snacks.nvim' },
+    config = true,
     keys = {
-      { '<leader>cc', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude Code' },
-      { '<leader>cr', '<cmd>ClaudeCodeResume<cr>', desc = 'Resume conversation' },
-    },
-    opts = {
-      window = {
-        position = 'botright',
-        split_ratio = 0.4,
-      },
+      { '<leader>cc', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude' },
+      { '<leader>cf', '<cmd>ClaudeCodeFocus<cr>', desc = 'Focus Claude' },
+      { '<leader>cs', '<cmd>ClaudeCodeSend<cr>', mode = 'v', desc = 'Send to Claude' },
+      { '<leader>ca', '<cmd>ClaudeCodeAdd %<cr>', desc = 'Add buffer to Claude' },
     },
   },
 
@@ -244,20 +277,13 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>b', group = '[B]uffer' },
         { '<leader>c', group = '[C]laude/[C]rates' },
-        { '<leader>e', desc = 'File [E]xplorer' },
-        { '<leader>E', desc = '[E]xplorer reveal' },
         { '<leader>g', group = '[G]it' },
         { '<leader>r', group = '[R]ust' },
         { '<leader>s', group = '[S]earch' },
-        { '<leader>S', group = '[S]pectre (Search/Replace)' },
         { '<leader>t', group = '[T]ypeScript/[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>w', group = '[W]indow/Swap' },
-        { '<leader>x', group = 'Trouble/Diagnosti[x]' },
-        { '<leader>y', desc = '[Y]azi (cwd)' },
-        { '<leader>Y', desc = '[Y]azi resume' },
       },
     },
   },
@@ -282,21 +308,68 @@ require('lazy').setup({
       --  - Insert mode: <c-/>
       --  - Normal mode: ?
       require('telescope').setup {
-        -- You can put your default mappings / updates / etc. in here
-        --  All the info you're looking for is in `:help telescope.setup()`
-        --
         defaults = {
+          -- Layout: more breathing room
+          layout_strategy = 'horizontal',
+          layout_config = {
+            horizontal = {
+              prompt_position = 'top',
+              preview_width = 0.55,
+              width = 0.87,
+              height = 0.80,
+            },
+          },
+          sorting_strategy = 'ascending',
+
+          -- Visual: less dense, easier to scan
+          prompt_prefix = '> ',
+          selection_caret = '> ',
+          entry_prefix = '  ',
+          multi_icon = '+ ',
+
+          -- Path display: truncate long paths smartly
+          path_display = { 'truncate' },
+
+          -- Better file ignore
+          file_ignore_patterns = { 'node_modules', '.git/', '%.lock' },
+
+          -- Preview settings
+          preview = {
+            treesitter = true,
+          },
+
           mappings = {
             i = { ['<c-enter>'] = 'to_fuzzy_refine' },
           },
         },
-        -- pickers = {}
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
         },
       }
+
+      -- Better colors for Ayu - make matches POP
+      local colors = {
+        prompt = '#0d1017',
+        results = '#0d1017',
+        preview = '#0d1017',
+        border = '#3D424D',
+        match = '#FF8F40',      -- Bright orange for matches
+        selection = '#1A1F29',  -- Subtle selection bg
+        selection_caret = '#FF8F40',
+      }
+
+      vim.api.nvim_set_hl(0, 'TelescopePromptNormal', { bg = colors.prompt })
+      vim.api.nvim_set_hl(0, 'TelescopeResultsNormal', { bg = colors.results })
+      vim.api.nvim_set_hl(0, 'TelescopePreviewNormal', { bg = colors.preview })
+      vim.api.nvim_set_hl(0, 'TelescopeBorder', { fg = colors.border, bg = colors.prompt })
+      vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { fg = colors.border, bg = colors.prompt })
+      vim.api.nvim_set_hl(0, 'TelescopeResultsBorder', { fg = colors.border, bg = colors.results })
+      vim.api.nvim_set_hl(0, 'TelescopePreviewBorder', { fg = colors.border, bg = colors.preview })
+      vim.api.nvim_set_hl(0, 'TelescopeMatching', { fg = colors.match, bold = true })
+      vim.api.nvim_set_hl(0, 'TelescopeSelection', { bg = colors.selection })
+      vim.api.nvim_set_hl(0, 'TelescopeSelectionCaret', { fg = colors.selection_caret, bg = colors.selection })
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
@@ -558,7 +631,6 @@ require('lazy').setup({
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
-          stylua = function() end,
         },
       }
     end,
@@ -804,7 +876,7 @@ require('lazy').setup({
   require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
-  -- neo-tree YEETED - yazi gang 🦀
+  -- File explorer: using netrw or telescope
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   { import = 'custom.plugins' },

@@ -13,8 +13,10 @@ prepend_keymap = [
   # Zoxide jump (z + j = "zump")
   { on = ["z", "j"], run = "shell 'zoxide query -i | xargs -I {} yazi {}' --block", desc = "Zoxide jump" },
 
-  # fzf search (z + f = "zfind")
-  { on = ["z", "f"], run = "shell 'fd -tf | fzf | xargs -I {} yazi \"$(dirname {})\"' --block", desc = "fzf files" },
+  # fg.yazi - fzf powered search
+  { on = ["f", "g"], run = "plugin fg", desc = "Grep content (fuzzy)" },
+  { on = ["f", "G"], run = "plugin fg --args=rg", desc = "Grep content (rg exact)" },
+  { on = ["f", "f"], run = "plugin fg --args=fzf", desc = "Find files (fzf)" },
 
   # Git
   { on = ["g", "g"], run = "shell lazygit --block", desc = "Open lazygit" },

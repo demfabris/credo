@@ -97,14 +97,14 @@ float offsetFunction(float iTime) {
 	return amount * periods[3];
 }
 
-const float DIM_CUTOFF = 0.35;
+const float DIM_CUTOFF = 0.25;
 const float BRIGHT_CUTOFF = 0.65;
 const float ABBERATION_FACTOR = 0.05;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec2 uv = fragCoord.xy / iResolution.xy;
 
-    float amount = offsetFunction(iTime);
+    float amount = 0;
 
     vec3 col;
     col.r = texture( iChannel0, vec2(uv.x-ABBERATION_FACTOR*amount / iResolution.x, uv.y) ).r;

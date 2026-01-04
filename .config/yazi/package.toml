@@ -33,5 +33,12 @@ use = "yazi-rs/plugins:no-status"
 rev = "19dc890"
 hash = "3e023d31f29201efdac2a6ae35fedb78"
 
-[flavor]
-deps = []
+[[plugin.deps]]
+use = "DreamMaoMao/fg"
+rev = "b9fb819"
+hash = "7d62f2eae04f77d13a21917c169b151b"
+
+[[flavor.deps]]
+use = "kmlupreti/ayu-dark"
+rev = "648a178"
+hash = "97124aae31cd2a5cae41c93f804996a5"

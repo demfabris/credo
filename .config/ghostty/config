@@ -46,6 +46,10 @@ copy-on-select = clipboard
 mouse-hide-while-typing = true
 mouse-scroll-multiplier = 1
 
+# URL detection - hold Cmd, hover over URL, then click
+link-url = true
+link-previews = true
+
 # Allow apps to write to clipboard (OSC 52) - critical for tmux/SSH
 clipboard-read = allow
 clipboard-write = allow
@@ -58,4 +62,4 @@ shell-integration-features = cursor,sudo,title
 macos-option-as-alt = true
 keybind = shift+enter=text:\x1b\r
 
-# custom-shader = ~/.config/ghostty/shaders/crt.glsl
+custom-shader = ~/.config/ghostty/shaders/glow-rgbsplit-twitchy.glsl

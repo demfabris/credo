@@ -7,13 +7,6 @@ model: opus
 
 You are tasked with creating detailed implementation plans through an interactive, iterative process. You should be skeptical, thorough, and work collaboratively with the user to produce high-quality technical specifications.
 
-## Initial Setup
-
-**First, detect if this repo uses a thoughts/ directory:**
-- Check if `thoughts/` directory exists in the repo root
-- Set `HAS_THOUGHTS=true` if it exists, `HAS_THOUGHTS=false` otherwise
-- This determines whether to use thoughts-related agents and output paths
-
 ## Initial Response
 
 When this command is invoked:
@@ -22,23 +15,6 @@ When this command is invoked:
    - If a file path or ticket reference was provided as a parameter, skip the default message
    - Immediately read any provided files FULLY
    - Begin the research process
-
-2. **If no parameters provided**, respond with:
-```
-I'll help you create a detailed implementation plan. Let me start by understanding what we're building.
-
-Please provide:
-1. The task/ticket description (or reference to a ticket file)
-2. Any relevant context, constraints, or specific requirements
-3. Links to related research or previous implementations
-
-I'll analyze this information and work with you to create a comprehensive plan.
-
-Tip: You can also invoke this command with a ticket file directly: `/create_plan path/to/ticket.md`
-For deeper analysis, try: `/create_plan think deeply about path/to/ticket.md`
-```
-
-Then wait for the user's input.
 
 ## Process Steps
 
@@ -55,10 +31,10 @@ Then wait for the user's input.
 
 2. **Spawn initial research tasks to gather context**:
    Before asking the user any questions, use specialized agents to research in parallel:
-
    - Use the **codebase-locator** agent to find all files related to the ticket/task
    - Use the **codebase-analyzer** agent to understand how the current implementation works
-   - If HAS_THOUGHTS=true, use the **thoughts-locator** agent to find any existing thoughts documents about this feature
+   - Use the **codebase-pattern-finder** agent to find similar features we can model after
+   - Use the **codebase-archeologist** agent to to understand recent changes on the topic in the codebase
 
    These agents will:
    - Find relevant source files, configs, and tests
@@ -78,8 +54,9 @@ Then wait for the user's input.
    - Determine true scope based on codebase reality
 
 5. **Present informed understanding and focused questions**:
+
    ```
-   Based on the ticket and my research of the codebase, I understand we need to [accurate summary].
+   Based on my research of the codebase, I understand we need to [accurate summary].
 
    I've found that:
    - [Current implementation detail with file:line reference]
@@ -115,10 +92,6 @@ After getting initial clarifications:
    - **codebase-analyzer** - To understand implementation details (e.g., "analyze how [system] works")
    - **codebase-pattern-finder** - To find similar features we can model after
 
-   **For historical context (ONLY if HAS_THOUGHTS=true):**
-   - **thoughts-locator** - To find any research, plans, or decisions about this area
-   - **thoughts-analyzer** - To extract key insights from the most relevant documents
-
    Each agent knows how to:
    - Find the right files and code patterns
    - Identify conventions and patterns to follow
@@ -126,9 +99,10 @@ After getting initial clarifications:
    - Return specific file:line references
    - Find tests and examples
 
-3. **Wait for ALL sub-tasks to complete** before proceeding
+4. **Wait for ALL sub-tasks to complete** before proceeding
 
-4. **Present findings and design options**:
+5. **Present findings and design options**:
+
    ```
    Based on my research, here's what I found:
 
@@ -152,6 +126,7 @@ After getting initial clarifications:
 Once aligned on approach:
 
 1. **Create initial plan outline**:
+
    ```
    Here's my proposed plan structure:
 
@@ -201,6 +176,7 @@ After structure approval:
 [A Specification of the desired end state after this plan is complete, and how to verify it]
 
 ### Key Discoveries:
+
 - [Important finding with file:line reference]
 - [Pattern to follow]
 - [Constraint to work within]
@@ -216,11 +192,13 @@ After structure approval:
 ## Phase 1: [Descriptive Name]
 
 ### Overview
+
 [What this phase accomplishes]
 
 ### Changes Required:
 
 #### 1. [Component/File Group]
+
 **File**: `path/to/file.ext`
 **Changes**: [Summary of changes]
 
@@ -231,6 +209,7 @@ After structure approval:
 ### Success Criteria:
 
 #### Automated Verification:
+
 - [ ] Migration applies cleanly: `make migrate`
 - [ ] Unit tests pass: `make test-component`
 - [ ] Type checking passes: `npm run typecheck`
@@ -238,6 +217,7 @@ After structure approval:
 - [ ] Integration tests pass: `make test-integration`
 
 #### Manual Verification:
+
 - [ ] Feature works as expected when tested via UI
 - [ ] Performance is acceptable under load
 - [ ] Edge case handling verified manually
@@ -256,13 +236,16 @@ After structure approval:
 ## Testing Strategy
 
 ### Unit Tests:
+
 - [What to test]
 - [Key edge cases]
 
 ### Integration Tests:
+
 - [End-to-end scenarios]
 
 ### Manual Testing Steps:
+
 1. [Specific step to verify feature]
 2. [Another verification step]
 3. [Edge case to test manually]
@@ -289,6 +272,7 @@ After structure approval:
    - This ensures the plan is properly indexed and available
 
 2. **Present the draft plan location**:
+
    ```
    I've created the initial implementation plan at:
    `[output path]`
@@ -364,26 +348,10 @@ After structure approval:
    - Edge cases that are hard to automate
    - User acceptance criteria
 
-**Format example:**
-```markdown
-### Success Criteria:
-
-#### Automated Verification:
-- [ ] Database migration runs successfully: `make migrate`
-- [ ] All unit tests pass: `go test ./...`
-- [ ] No linting errors: `golangci-lint run`
-- [ ] API endpoint returns 200: `curl localhost:8080/api/new-endpoint`
-
-#### Manual Verification:
-- [ ] New feature appears correctly in the UI
-- [ ] Performance is acceptable with 1000+ items
-- [ ] Error messages are user-friendly
-- [ ] Feature works correctly on mobile devices
-```
-
 ## Common Patterns
 
 ### For Database Changes:
+
 - Start with schema/migration
 - Add store methods
 - Update business logic
@@ -391,6 +359,7 @@ After structure approval:
 - Update clients
 
 ### For New Features:
+
 - Research existing patterns first
 - Start with data model
 - Build backend logic
@@ -398,6 +367,7 @@ After structure approval:
 - Implement UI last
 
 ### For Refactoring:
+
 - Document current behavior
 - Plan incremental changes
 - Maintain backwards compatibility
@@ -427,6 +397,7 @@ When spawning research sub-tasks:
    - Don't accept results that seem incorrect
 
 Example of spawning multiple tasks:
+
 ```python
 # Spawn these tasks concurrently:
 tasks = [
@@ -435,20 +406,4 @@ tasks = [
     Task("Investigate UI components", ui_research_prompt),
     Task("Check test patterns", test_research_prompt)
 ]
-```
-
-## Example Interaction Flow
-
-```
-User: /create_plan
-Assistant: I'll help you create a detailed implementation plan...
-
-User: We need to add parent-child tracking for sub-tasks. See path/to/ticket.md
-Assistant: Let me read that ticket file completely first...
-
-[Reads file fully]
-
-Based on the ticket, I understand we need to [accurate summary of the task]. Before I start planning, I have some questions...
-
-[Interactive process continues...]
 ```
