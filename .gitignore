@@ -70,17 +70,6 @@
 .codex/version.json
 
 # ─────────────────────────────────────────────
-# Claude-mem (settings only, NO database)
-# ─────────────────────────────────────────────
-!.claude-mem/
-!.claude-mem/settings.json
-# Exclude runtime data
-.claude-mem/*.db*
-.claude-mem/logs/
-.claude-mem/vector-db/
-.claude-mem/*.pid
-
-# ─────────────────────────────────────────────
 # .config/ tools
 # ─────────────────────────────────────────────
 !.config/

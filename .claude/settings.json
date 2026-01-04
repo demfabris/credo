@@ -53,7 +53,19 @@
     "defaultMode": "acceptEdits"
   },
   "model": "opus",
-  "hooks": {},
+  "hooks": {
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/bash $HOME/.claude/hooks/pre-compact-reflect.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "/bin/bash ~/.claude/scripts/statusline.sh"
