@@ -104,10 +104,53 @@ return {
     },
   },
 
+  -- AI code completion via Gemini (ghost text mode)
   {
-    'supermaven-inc/supermaven-nvim',
+    'milanglacier/minuet-ai.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
     config = function()
-      require('supermaven-nvim').setup {}
+      require('minuet').setup {
+        provider = 'openai', -- Switched from gemini (rate limits)
+        throttle = 1500,
+        debounce = 400,
+        context_window = 16000,
+        n_completions = 1,
+        add_single_line_entry = false,
+        -- Virtual text (ghost text) config
+        virtualtext = {
+          auto_trigger_ft = { '*' },
+          keymap = {
+            accept = '<Tab>',
+            accept_line = '<C-y>',
+            dismiss = '<C-e>',
+          },
+        },
+        provider_options = {
+          openai = {
+            model = 'gpt-4.1-mini',
+            api_key = 'OPENAI_API_KEY',
+            stream = true,
+            optional = {
+              max_completion_tokens = 256,
+            },
+          },
+          -- Keep gemini configured for manual switching
+          gemini = {
+            model = 'gemini-2.5-flash',
+            api_key = 'GEMINI_API_KEY',
+            stream = true,
+            optional = {
+              generationConfig = {
+                maxOutputTokens = 256,
+                thinkingConfig = { thinkingBudget = 0 },
+              },
+            },
+          },
+        },
+      }
     end,
   },
 
@@ -302,7 +345,6 @@ return {
     },
   },
 
-
   {
     'NvChad/nvim-colorizer.lua',
     event = { 'BufReadPre', 'BufNewFile' },
@@ -325,5 +367,4 @@ return {
       },
     },
   },
-
 }

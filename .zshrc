@@ -9,6 +9,7 @@ source $ZSH/oh-my-zsh.sh
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 [[ -f ~/.config/lsd/colors.zsh ]] && source ~/.config/lsd/colors.zsh
+[[ -f ~/.secrets/env ]] && source ~/.secrets/env
 
 # Ayu Dark theme for fzf
 export FZF_DEFAULT_OPTS="
