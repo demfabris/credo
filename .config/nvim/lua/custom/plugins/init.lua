@@ -104,7 +104,7 @@ return {
     },
   },
 
-  -- AI code completion via Gemini (ghost text mode)
+  -- AI code completion via local Ollama (ghost text mode)
   {
     'milanglacier/minuet-ai.nvim',
     event = 'VeryLazy',
@@ -113,9 +113,10 @@ return {
     },
     config = function()
       require('minuet').setup {
-        provider = 'openai', -- Switched from gemini (rate limits)
-        throttle = 1500,
-        debounce = 400,
+        provider = 'openai_compatible',
+        notify = 'warn',
+        throttle = 1000,
+        debounce = 300,
         context_window = 16000,
         n_completions = 1,
         add_single_line_entry = false,
@@ -129,6 +130,14 @@ return {
           },
         },
         provider_options = {
+          -- Ollama via OpenAI-compatible endpoint
+          openai_compatible = {
+            model = 'qwen2.5-coder:32b',
+            end_point = 'http://arch-desktop:11434/v1/chat/completions',
+            api_key = 'TERM', -- Ollama ignores this, but minuet needs a valid env var
+            stream = true,
+          },
+          -- Keep cloud providers configured for fallback
           openai = {
             model = 'gpt-4.1-mini',
             api_key = 'OPENAI_API_KEY',
@@ -137,7 +146,6 @@ return {
               max_completion_tokens = 256,
             },
           },
-          -- Keep gemini configured for manual switching
           gemini = {
             model = 'gemini-2.5-flash',
             api_key = 'GEMINI_API_KEY',

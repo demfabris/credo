@@ -36,8 +36,9 @@ set -g window-status-format '  #W  '
 set -g window-status-current-format '#[bg=#1a1f29,fg=#E6B450,bold]  #W  '
 
 # Panes and messages
-set -g pane-border-style 'fg=#1a1f29'
-set -g pane-active-border-style 'fg=#E6B450'
+set -g pane-border-style 'fg=#636A72'
+set -g pane-active-border-style 'fg=#59C2FF'
+set -g pane-border-indicators arrows
 set -g message-style 'bg=#E6B450,fg=#0d1017,bold'
 set -g message-command-style 'bg=#E6B450,fg=#0d1017,bold'
 set -g mode-style 'bg=#1a1f29,fg=#BFBDB6'
