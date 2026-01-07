@@ -3,7 +3,7 @@
 # Analyzes conversation transcript before context compaction to detect patterns
 # and propose improvements to CLAUDE.md or new skills
 
-set -e
+# Note: Don't use set -e as jq commands may return non-zero on valid empty results
 
 # Read hook input from stdin
 INPUT=$(cat)
@@ -36,13 +36,14 @@ fi
 
 # Extract analysis-worthy data from transcript
 # Focus on: tool sequences, retries, failed searches, repeated patterns
+# Note: Transcript format wraps API messages in .message, with .type at record level
 ANALYSIS=$(cat "$TRANSCRIPT_PATH" | jq -s '
     # Filter to assistant messages with tool calls
-    [.[] | select(.role == "assistant" and .content != null)] |
+    # Record-level .type is "assistant", actual content is in .message.content
+    [.[] | select(.type == "assistant" and .message.content != null)] |
 
-    # Extract tool usage
-    [.[].content | if type == "array" then .[] else . end |
-     select(type == "object" and .type == "tool_use")] |
+    # Extract tool usage from .message.content (flatten arrays)
+    [.[].message.content[] | select(type == "object" and .type == "tool_use")] |
 
     # Build tool sequence
     {
@@ -51,8 +52,8 @@ ANALYSIS=$(cat "$TRANSCRIPT_PATH" | jq -s '
         cwd: $cwd,
         trigger: $trigger,
         tool_count: length,
-        tool_sequence: [.[:50] | .[].name],
-        tool_inputs_sample: [.[:10] | {name: .name, input_preview: (.input | tostring | .[0:200])}]
+        tool_sequence: [.[:50][].name],
+        tool_inputs_sample: [limit(10; .[]) | {name, input_preview: (.input | tostring | .[0:200])}]
     }
 ' --arg session_id "$SESSION_ID" --arg cwd "$CWD" --arg trigger "$TRIGGER" 2>/dev/null)
 

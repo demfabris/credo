@@ -5,6 +5,13 @@ vim.g.maplocalleader = ' '
 -- Nerd fonts
 vim.g.have_nerd_font = true
 
+-- Custom filetypes
+vim.filetype.add {
+  extension = {
+    fbs = 'flatbuffers',
+  },
+}
+
 vim.o.number = true
 vim.o.relativenumber = true
 
@@ -106,7 +113,7 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
 vim.api.nvim_create_autocmd('FileChangedShell', {
   group = vim.api.nvim_create_augroup('autoread-force', { clear = true }),
   callback = function()
-    vim.cmd('edit!') -- Force reload, accepting external changes
+    vim.cmd 'edit!' -- Force reload, accepting external changes
     vim.notify('File updated externally - reloaded', vim.log.levels.INFO)
   end,
 })
@@ -128,25 +135,6 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     end
   end,
 })
-
--- Transparent background (disabled - using explicit Ayu colors to match Ghostty)
--- do
---   local function set_transparent()
---     local groups = {
---       'Normal', 'NormalNC', 'SignColumn', 'LineNr', 'CursorLineNr',
---       'Folded', 'NonText', 'NormalFloat', 'FloatBorder', 'EndOfBuffer',
---     }
---     for _, grp in ipairs(groups) do
---       pcall(vim.api.nvim_set_hl, 0, grp, { bg = 'none' })
---     end
---   end
---   vim.api.nvim_create_autocmd('ColorScheme', {
---     group = vim.api.nvim_create_augroup('transparent-bg', { clear = true }),
---     callback = set_transparent,
---   })
---   -- Apply now for the initial colorscheme
---   set_transparent()
--- end
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -181,12 +169,22 @@ require('lazy').setup({
             { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
           },
           header = [[
-    ██████╗ ██████╗  ██████╗ ███╗   ███╗
-    ██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
-    ██║  ██║██████╔╝██║   ██║██╔████╔██║
-    ██║  ██║██╔══██╗██║   ██║██║╚██╔╝██║
-    ██████╔╝██║  ██║╚██████╔╝██║ ╚═╝ ██║
-    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+                 _nnnn_
+                dGGGGMMb
+               @p~qp~~qMb
+               M|@||@) M|
+               @,----.JM|
+              JS^\__/  qKL
+             dZP        qKRb
+            dZP          qKKb
+           fZP            SMMb
+           HZM            MMMM
+           FqM            MMMM
+         __| ".        |\dS"qML
+         |    `.       | `' \Zq
+        _)      \.___.,|     .'
+        \____   )MMMMMP|   .'
+             `-'       `--' hjm
       ]],
         },
         sections = {
@@ -355,8 +353,8 @@ require('lazy').setup({
         results = '#0d1017',
         preview = '#0d1017',
         border = '#3D424D',
-        match = '#FF8F40',      -- Bright orange for matches
-        selection = '#1A1F29',  -- Subtle selection bg
+        match = '#FF8F40', -- Bright orange for matches
+        selection = '#1A1F29', -- Subtle selection bg
         selection_caret = '#FF8F40',
       }
 
@@ -575,7 +573,22 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       local servers = {
-        -- clangd = {},
+        clangd = {
+          cmd = {
+            'clangd',
+            '--background-index',
+            '--clang-tidy',
+            '--header-insertion=iwyu',
+            '--completion-style=detailed',
+            '--function-arg-placeholders',
+            '--fallback-style=llvm',
+          },
+          init_options = {
+            usePlaceholders = true,
+            completeUnimported = true,
+            clangdFileStatus = true,
+          },
+        },
         gopls = {},
         -- pyright = {},
         -- rust_analyzer = {}, -- Handled by rustaceanvim
@@ -616,6 +629,7 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'prettierd', -- Prettier daemon - faster than prettier
+        'clang-format', -- C/C++ formatter
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -668,6 +682,9 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        -- C/C++ - manual format only (format_on_save disabled above)
+        c = { 'clang-format' },
+        cpp = { 'clang-format' },
         -- TypeScript/JavaScript - prettierd is a daemon, way faster
         typescript = { 'prettierd' },
         typescriptreact = { 'prettierd' },
@@ -845,6 +862,7 @@ require('lazy').setup({
       ensure_installed = {
         'bash',
         'c',
+        'cpp',
         'diff',
         'html',
         'lua',

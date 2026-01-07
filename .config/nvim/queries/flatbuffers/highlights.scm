@@ -1,0 +1,1 @@
+/Users/demfabris/Documents/Development/flatbuffers-treesitter/queries/highlights.scm

@@ -3,17 +3,103 @@
 --
 -- See the kickstart.nvim README for more information
 return {
+  -- File explorer
+  {
+    'jamespeilunli/nvim-flatbuffers',
+    event = 'LspAttach',
+    config = function()
+      require('flatbuffers').setup()
+    end,
+  },
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons',
+      'MunifTanjim/nui.nvim',
+    },
+    cmd = 'Neotree',
+    keys = {
+      { '<leader>e', '<CMD>Neotree toggle<CR>', desc = 'Toggle file [E]xplorer' },
+      { '<leader>E', '<CMD>Neotree reveal<CR>', desc = 'Reveal current file in [E]xplorer' },
+      { '<leader>ge', '<CMD>Neotree git_status<CR>', desc = '[G]it [E]xplorer' },
+      { '<leader>be', '<CMD>Neotree buffers<CR>', desc = '[B]uffer [E]xplorer' },
+    },
+    opts = {
+      close_if_last_window = true,
+      popup_border_style = 'rounded',
+      filesystem = {
+        follow_current_file = { enabled = true },
+        use_libuv_file_watcher = true, -- Auto-refresh on external changes
+        filtered_items = {
+          hide_dotfiles = false,
+          hide_gitignored = false,
+          hide_by_name = { '.git', 'node_modules', 'target', '.DS_Store' },
+          never_show = { '.DS_Store', 'thumbs.db' },
+        },
+      },
+      window = {
+        width = 35,
+        mappings = {
+          ['<space>'] = 'none', -- Don't conflict with leader
+          ['l'] = 'open',
+          ['h'] = 'close_node',
+          ['<cr>'] = 'open',
+          ['s'] = 'open_vsplit',
+          ['S'] = 'open_split',
+          ['C'] = 'close_node',
+          ['z'] = 'close_all_nodes',
+          ['Z'] = 'expand_all_nodes',
+          ['a'] = { 'add', config = { show_path = 'relative' } },
+          ['d'] = 'delete',
+          ['r'] = 'rename',
+          ['y'] = 'copy_to_clipboard',
+          ['x'] = 'cut_to_clipboard',
+          ['p'] = 'paste_from_clipboard',
+          ['c'] = 'copy',
+          ['m'] = 'move',
+          ['q'] = 'close_window',
+          ['?'] = 'show_help',
+          ['<'] = 'prev_source',
+          ['>'] = 'next_source',
+        },
+      },
+      default_component_configs = {
+        indent = {
+          with_expanders = true,
+          expander_collapsed = '',
+          expander_expanded = '',
+        },
+        git_status = {
+          symbols = {
+            added = '',
+            modified = '',
+            deleted = '✖',
+            renamed = '󰁕',
+            untracked = '',
+            ignored = '',
+            unstaged = '󰄱',
+            staged = '',
+            conflict = '',
+          },
+        },
+      },
+    },
+  },
+
   -- Seamless navigation between tmux panes and neovim splits
   {
     'mrjones2014/smart-splits.nvim',
     lazy = false,
     keys = {
-      -- Navigation
+      -- Navigation (works in normal AND terminal mode)
       {
         '<C-h>',
         function()
           require('smart-splits').move_cursor_left()
         end,
+        mode = { 'n', 't' },
         desc = 'Move to left split/pane',
       },
       {
@@ -21,6 +107,7 @@ return {
         function()
           require('smart-splits').move_cursor_down()
         end,
+        mode = { 'n', 't' },
         desc = 'Move to below split/pane',
       },
       {
@@ -28,6 +115,7 @@ return {
         function()
           require('smart-splits').move_cursor_up()
         end,
+        mode = { 'n', 't' },
         desc = 'Move to above split/pane',
       },
       {
@@ -35,6 +123,7 @@ return {
         function()
           require('smart-splits').move_cursor_right()
         end,
+        mode = { 'n', 't' },
         desc = 'Move to right split/pane',
       },
       -- Resizing (Alt + hjkl)
@@ -264,19 +353,33 @@ return {
           end,
           default_settings = {
             ['rust-analyzer'] = {
+              -- Performance: separate target dir prevents cache invalidation
               cargo = {
                 allFeatures = true,
                 loadOutDirsFromCheck = true,
-                buildScripts = { enable = true },
+                buildScripts = {
+                  enable = true,
+                  rebuildOnSave = false, -- Don't rebuild on every save
+                },
+                targetDir = 'target/ra', -- Isolate from cargo build
               },
               checkOnSave = true,
-              check = { command = 'clippy' },
+              check = {
+                command = 'clippy',
+                extraArgs = { '--target-dir=target/ra-check' },
+              },
               procMacro = {
                 enable = true,
                 ignored = {
                   ['async-trait'] = { 'async_trait' },
                   ['tokio'] = { 'main', 'test' },
                 },
+              },
+              -- Performance: bump LRU cache for large projects
+              lru = { capacity = 512 },
+              -- Performance: limit workspace symbol search
+              workspace = {
+                symbol = { search = { limit = 1024 } },
               },
             },
           },

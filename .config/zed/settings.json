@@ -63,5 +63,41 @@
     "mode": "system",
     "light": "Ayu Light",
     "dark": "Ayu Dark"
+  },
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "cargo": {
+          "allFeatures": true,
+          "loadOutDirsFromCheck": true,
+          "buildScripts": {
+            "enable": true,
+            "rebuildOnSave": false
+          },
+          "targetDir": "target/ra"
+        },
+        "check": {
+          "command": "clippy",
+          "extraArgs": ["--target-dir=target/ra-check"]
+        },
+        "procMacro": {
+          "enable": true,
+          "ignored": {
+            "async-trait": ["async_trait"],
+            "tokio": ["main", "test"]
+          }
+        },
+        "lru": {
+          "capacity": 512
+        },
+        "workspace": {
+          "symbol": {
+            "search": {
+              "limit": 1024
+            }
+          }
+        }
+      }
+    }
   }
 }

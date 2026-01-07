@@ -81,3 +81,8 @@ eval "$(zoxide init zsh)"
 export PATH="$PATH:$HOME/.local/bin"
 export TTS_DEBUG=1
 export CCNOTIFY_DEBUG=1
+
+# Prefer Homebrew binaries over system
+export PATH="/opt/homebrew/bin:$PATH"
+
+alias ccc='~/.local/share/claude/versions/2.0.76'
