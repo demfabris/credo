@@ -3,6 +3,35 @@
 --
 -- See the kickstart.nvim README for more information
 return {
+  -- Bufferline (visual only, no keybindings)
+  {
+    'akinsho/bufferline.nvim',
+    version = '*',
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    event = 'VeryLazy',
+    opts = {
+      options = {
+        mode = 'buffers',
+        diagnostics = 'nvim_lsp',
+        diagnostics_indicator = function(count, level)
+          local icon = level:match 'error' and ' ' or ' '
+          return ' ' .. icon .. count
+        end,
+        show_buffer_close_icons = false,
+        show_close_icon = false,
+        separator_style = 'thin',
+        always_show_bufferline = false, -- only show when >1 buffer
+        offsets = {
+          {
+            filetype = 'neo-tree',
+            text = 'Files',
+            highlight = 'Directory',
+            separator = true,
+          },
+        },
+      },
+    },
+  },
   -- File explorer
   {
     'jamespeilunli/nvim-flatbuffers',
