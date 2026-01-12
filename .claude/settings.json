@@ -72,16 +72,11 @@
   },
   "enabledPlugins": {
     "learning-output-style@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
-    "supabase@claude-plugins-official": true,
-    "clangd-lsp@claude-plugins-official": false,
     "rust-analyzer-lsp@claude-plugins-official": true,
-    "swift-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "figma@claude-plugins-official": true,
-    "explanatory-output-style@claude-plugins-official": false,
-    "example-skills@anthropic-agent-skills": true
+    "explanatory-output-style@claude-plugins-official": true,
+    "clangd-lsp@claude-plugins-official": true
   },
   "syntaxHighlightingDisabled": false
 }

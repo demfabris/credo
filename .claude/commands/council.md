@@ -21,7 +21,7 @@ Format the arguments so that the council has a clear goal to work towards but do
 You are summoning the Council of LLMs. Given the user's prompt, you must:
 
 1. **Spawn THREE parallel subagents** using the Task tool (with `run_in_background: true`):
-   - **Codex Agent**: Run `codex exec "$ARGUMENTS" --search --full-auto` via Bash (timeout: 300000)
+   - **Codex Agent**: Run `codex exec "$ARGUMENTS" --full-auto` via Bash (timeout: 300000)
    - **Gemini Agent**: Run `gemini "$ARGUMENTS" --output-format text` via Bash (timeout: 120000)
    - **GLM Agent**: Run `opencode run --model zai-coding-plan/glm-4.7 "$ARGUMENTS"` via Bash (timeout: 180000)
 

@@ -1,5 +1,5 @@
 model = "gpt-5.2-codex"
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 [projects."/Users/demfabris/Documents/Development/xt"]
 trust_level = "trusted"
 

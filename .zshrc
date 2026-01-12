@@ -27,9 +27,9 @@ alias gs="git status"
 alias l='y'
 alias ll='lsd -lah'
 alias python='python3'
-alias gem='gemini'
 alias vim='nvim'
 alias pp='pbcopy'
+alias claude='claude --allow-dangerously-skip-permissions'
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -68,21 +68,10 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# pnpm
-export PNPM_HOME="/Users/demfabris/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-
 # zoxide (smarter cd)
 eval "$(zoxide init zsh)"
 
 export PATH="$PATH:$HOME/.local/bin"
-export TTS_DEBUG=1
-export CCNOTIFY_DEBUG=1
 
 # Prefer Homebrew binaries over system
 export PATH="/opt/homebrew/bin:$PATH"
-
-alias ccc='~/.local/share/claude/versions/2.0.76'
