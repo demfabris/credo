@@ -32,18 +32,17 @@ if git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
 fi
 
 
-# Calculate context window usage
+# Calculate context window usage (v2.1.6+ provides used_percentage directly)
 context_info=""
-usage=$(echo "$input" | jq '.context_window.current_usage')
-if [ "$usage" != "null" ]; then
-    current=$(echo "$usage" | jq '.input_tokens + .cache_creation_input_tokens + .cache_read_input_tokens')
-    size=$(echo "$input" | jq '.context_window.context_window_size')
-    pct=$((current * 100 / size))
-    
+pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
+if [ -n "$pct" ]; then
+    # Truncate to integer
+    pct=${pct%.*}
+
     # Color code based on usage
-    if [ $pct -lt 50 ]; then
+    if [ "$pct" -lt 50 ]; then
         color=$(printf '\033[32m')  # green
-    elif [ $pct -lt 80 ]; then
+    elif [ "$pct" -lt 80 ]; then
         color=$(printf '\033[33m')  # yellow
     else
         color=$(printf '\033[31m')  # red

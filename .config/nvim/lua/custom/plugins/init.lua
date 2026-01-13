@@ -222,60 +222,32 @@ return {
     },
   },
 
-  -- AI code completion via local Ollama (ghost text mode)
+  -- AI code completion via Codeium (ghost text mode)
   {
-    'milanglacier/minuet-ai.nvim',
+    'Exafunction/codeium.nvim',
     event = 'VeryLazy',
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
     config = function()
-      require('minuet').setup {
-        provider = 'openai_compatible',
-        notify = 'warn',
-        throttle = 1000,
-        debounce = 300,
-        context_window = 16000,
-        n_completions = 1,
-        add_single_line_entry = false,
-        -- Virtual text (ghost text) config
-        virtualtext = {
-          auto_trigger_ft = { '*' },
-          keymap = {
+      require('codeium').setup {
+        -- Virtual text (ghost text) - the good stuff
+        virtual_text = {
+          enabled = true,
+          manual = false, -- auto-trigger
+          idle_delay = 75, -- ms before showing suggestions
+          virtual_text_priority = 65535, -- high priority
+          key_bindings = {
             accept = '<Tab>',
             accept_line = '<C-y>',
+            accept_word = '<C-Right>',
+            next = '<M-]>',
+            prev = '<M-[>',
             dismiss = '<C-e>',
           },
         },
-        provider_options = {
-          -- Ollama via OpenAI-compatible endpoint
-          openai_compatible = {
-            model = 'qwen2.5-coder:32b',
-            end_point = 'http://arch-desktop:11434/v1/chat/completions',
-            api_key = 'TERM', -- Ollama ignores this, but minuet needs a valid env var
-            stream = true,
-          },
-          -- Keep cloud providers configured for fallback
-          openai = {
-            model = 'gpt-4.1-mini',
-            api_key = 'OPENAI_API_KEY',
-            stream = true,
-            optional = {
-              max_completion_tokens = 256,
-            },
-          },
-          gemini = {
-            model = 'gemini-2.5-flash',
-            api_key = 'GEMINI_API_KEY',
-            stream = true,
-            optional = {
-              generationConfig = {
-                maxOutputTokens = 256,
-                thinkingConfig = { thinkingBudget = 0 },
-              },
-            },
-          },
-        },
+        -- We use blink.cmp, not nvim-cmp
+        enable_cmp_source = false,
       }
     end,
   },

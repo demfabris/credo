@@ -80,6 +80,9 @@
 # Exclude lazy.nvim lock file (auto-generated)
 .config/nvim/lazy-lock.json
 
+# Exclude macOS junk
+.config/.DS_Store
+
 # Terminal
 !.config/ghostty/
 !.config/ghostty/**
@@ -89,6 +92,8 @@
 !.config/yazi/**
 !.config/lsd/
 !.config/lsd/**
+!.config/bat/
+!.config/bat/**
 
 # Shells
 !.config/fish/

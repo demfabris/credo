@@ -36,7 +36,6 @@
       "Bash(docker:*)",
       "Bash(docker-compose:*)",
       "Bash(npm run dev:*)",
-      "Skill(frontend-design:frontend-design)",
       "Bash(cargo check:*)",
       "Bash(npm run typecheck:*)",
       "Bash(npm run type-check:*)",
@@ -71,12 +70,10 @@
     "command": "/bin/bash ~/.claude/scripts/statusline.sh"
   },
   "enabledPlugins": {
-    "learning-output-style@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "explanatory-output-style@claude-plugins-official": true,
-    "clangd-lsp@claude-plugins-official": true
+    "explanatory-output-style@claude-plugins-official": true
   },
-  "syntaxHighlightingDisabled": false
+  "syntaxHighlightingDisabled": true
 }

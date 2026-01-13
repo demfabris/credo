@@ -214,6 +214,7 @@ require('lazy').setup({
   -- See `:help gitsigns` to understand what the configuration keys do
   {
     'lewis6991/gitsigns.nvim',
+    tag = 'v1.0.2', -- Pin to last stable before 2.0.0 breaking changes
     opts = {
       signs = {
         add = { text = '+' },

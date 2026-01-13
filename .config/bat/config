@@ -1,0 +1,4 @@
+# Bat configuration
+--theme="ayu-dark"
+--style="numbers,changes,header"
+--italic-text=always
