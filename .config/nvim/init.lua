@@ -94,6 +94,17 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Split navigation handled by smart-splits.nvim (seamless tmux integration)
 
+-- Buffer navigation
+-- Option+H/L (macos-option-as-alt makes Option send Meta)
+vim.keymap.set('n', '<M-h>', '<Cmd>bprev<CR>', { desc = 'Previous buffer' })
+vim.keymap.set('n', '<M-l>', '<Cmd>bnext<CR>', { desc = 'Next buffer' })
+-- Tab/Shift-Tab (intuitive, like browser tabs)
+vim.keymap.set('n', '<Tab>', '<Cmd>bnext<CR>', { desc = 'Next buffer' })
+vim.keymap.set('n', '<S-Tab>', '<Cmd>bprev<CR>', { desc = 'Previous buffer' })
+-- Unimpaired-style brackets
+vim.keymap.set('n', ']b', '<Cmd>bnext<CR>', { desc = 'Next buffer' })
+vim.keymap.set('n', '[b', '<Cmd>bprev<CR>', { desc = 'Previous buffer' })
+
 -- [[ Basic Autocommands ]]
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -115,6 +126,20 @@ vim.api.nvim_create_autocmd('FileChangedShell', {
   callback = function()
     vim.cmd 'edit!' -- Force reload, accepting external changes
     vim.notify('File updated externally - reloaded', vim.log.levels.INFO)
+  end,
+})
+
+-- Dim inactive windows (line numbers, sign column, etc.)
+vim.api.nvim_create_autocmd('WinEnter', {
+  group = vim.api.nvim_create_augroup('dim-inactive', { clear = true }),
+  callback = function()
+    vim.opt_local.winhighlight = ''
+  end,
+})
+vim.api.nvim_create_autocmd('WinLeave', {
+  group = 'dim-inactive',
+  callback = function()
+    vim.opt_local.winhighlight = 'Normal:NormalNC,LineNr:NormalNC,SignColumn:NormalNC,CursorLineNr:NormalNC'
   end,
 })
 
@@ -539,8 +564,9 @@ require('lazy').setup({
             })
           end
 
-          -- Toogle inlay hints
+          -- Inlay hints: enable by default, with toggle
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+            vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
             map('<leader>th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
@@ -813,12 +839,14 @@ require('lazy').setup({
           overrides = {
             -- Match Ghostty background exactly
             Normal = { bg = '#0d1017' },
-            NormalNC = { bg = '#0d1017' },
+            NormalNC = { bg = '#080a0e', fg = '#565B66' }, -- Dimmed: darker bg + muted fg
             SignColumn = { bg = '#0d1017' },
             LineNr = { bg = '#0d1017' },
             NormalFloat = { bg = '#0d1017' },
             FloatBorder = { fg = '#3D424D', bg = '#0d1017' }, -- Subtle border, visible but not distracting
             FloatTitle = { fg = '#E6B450', bg = '#0d1017', bold = true }, -- Orange accent
+            -- Inactive window extras
+            WinSeparator = { fg = '#1c2129', bg = 'NONE' }, -- Subtle separator
           },
         }
         vim.o.background = 'dark'

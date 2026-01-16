@@ -58,6 +58,17 @@ return {
     opts = {
       close_if_last_window = true,
       popup_border_style = 'rounded',
+      git_status = {
+        window = {
+          mappings = {
+            ['ga'] = 'git_add_file',
+            ['gA'] = 'git_add_all',
+            ['gu'] = 'git_unstage_file',
+            ['gr'] = 'git_revert_file',
+            ['gc'] = 'git_commit',
+          },
+        },
+      },
       filesystem = {
         follow_current_file = { enabled = true },
         use_libuv_file_watcher = true, -- Auto-refresh on external changes
@@ -155,34 +166,26 @@ return {
         mode = { 'n', 't' },
         desc = 'Move to right split/pane',
       },
-      -- Resizing (Alt + hjkl)
+      -- Resizing (Alt + hjkl) - simpler: h/l = width, j/k = height
       {
         '<A-h>',
-        function()
-          require('smart-splits').resize_left()
-        end,
-        desc = 'Resize split left',
-      },
-      {
-        '<A-j>',
-        function()
-          require('smart-splits').resize_down()
-        end,
-        desc = 'Resize split down',
-      },
-      {
-        '<A-k>',
-        function()
-          require('smart-splits').resize_up()
-        end,
-        desc = 'Resize split up',
+        function() vim.cmd('vertical resize -3') end,
+        desc = 'Shrink width',
       },
       {
         '<A-l>',
-        function()
-          require('smart-splits').resize_right()
-        end,
-        desc = 'Resize split right',
+        function() vim.cmd('vertical resize +3') end,
+        desc = 'Grow width',
+      },
+      {
+        '<A-j>',
+        function() vim.cmd('resize -3') end,
+        desc = 'Shrink height',
+      },
+      {
+        '<A-k>',
+        function() vim.cmd('resize +3') end,
+        desc = 'Grow height',
       },
       -- Swapping buffers between splits
       {

@@ -73,7 +73,8 @@
     "context7@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "explanatory-output-style@claude-plugins-official": true
+    "explanatory-output-style@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true
   },
   "syntaxHighlightingDisabled": true
 }
