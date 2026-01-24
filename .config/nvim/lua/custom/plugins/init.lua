@@ -491,4 +491,44 @@ return {
       },
     },
   },
+
+  -- Tailwind CSS utilities (class sorting, concealing, color hints)
+  {
+    'luckasRanarison/tailwind-tools.nvim',
+    name = 'tailwind-tools',
+    build = ':UpdateRemotePlugins',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-telescope/telescope.nvim', -- optional for class picker
+      'neovim/nvim-lspconfig',
+    },
+    ft = { 'html', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'astro' },
+    opts = {
+      document_color = {
+        enabled = true,
+        kind = 'inline', -- "inline" | "foreground" | "background"
+        inline_symbol = '󰝤 ', -- nerd font color swatch
+      },
+      conceal = {
+        enabled = false, -- set true to collapse long class lists into a symbol
+        symbol = '󱏿', -- tailwind logo
+        highlight = {
+          fg = '#38BDF8', -- sky-400
+        },
+      },
+      cmp = {
+        highlight = 'foreground', -- color hint in completion menu
+      },
+      extension = {
+        queries = {}, -- custom treesitter queries
+        patterns = {}, -- custom class attribute patterns
+      },
+    },
+    keys = {
+      { '<leader>tw', '<CMD>TailwindSort<CR>', desc = 'Tailwind: Sort classes' },
+      { '<leader>tW', '<CMD>TailwindSortSelection<CR>', mode = 'v', desc = 'Tailwind: Sort selection' },
+      { '<leader>tc', '<CMD>TailwindConcealToggle<CR>', desc = 'Tailwind: Toggle conceal' },
+      { '<leader>tp', '<CMD>TailwindColors<CR>', desc = 'Tailwind: Pick color class' },
+    },
+  },
 }

@@ -37,6 +37,8 @@
 !.claude/commands/**
 !.claude/skills/
 !.claude/skills/**
+!.claude/plugins/
+.claude/plugins/cache/*
 # Exclude compiled skill artifacts
 .claude/skills/dist/
 !.claude/hooks/
@@ -47,9 +49,6 @@
 !.claude/scripts/**
 !.claude/agents/
 !.claude/agents/**
-
-# MCP Server config (uses env vars for secrets)
-!.mcp.json
 
 # ─────────────────────────────────────────────
 # Codex CLI (config only, NO auth/secrets)

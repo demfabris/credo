@@ -161,6 +161,16 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   end,
 })
 
+-- Auto-save on focus lost or buffer leave (VSCode-style)
+vim.api.nvim_create_autocmd({ 'FocusLost', 'BufLeave' }, {
+  group = vim.api.nvim_create_augroup('autosave', { clear = true }),
+  callback = function()
+    if vim.bo.modified and vim.fn.expand '%' ~= '' and not vim.bo.readonly then
+      vim.cmd 'silent! write'
+    end
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -305,7 +315,7 @@ require('lazy').setup({
         { '<leader>g', group = '[G]it' },
         { '<leader>r', group = '[R]ust' },
         { '<leader>s', group = '[S]earch' },
-        { '<leader>t', group = '[T]ypeScript/[T]oggle' },
+        { '<leader>t', group = '[T]ypeScript/[T]ailwind/[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>w', group = '[W]indow/Swap' },
       },
@@ -629,6 +639,24 @@ require('lazy').setup({
           },
         },
         gopls = {},
+        tailwindcss = {
+          filetypes = { 'html', 'css', 'scss', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+          settings = {
+            tailwindCSS = {
+              classAttributes = { 'class', 'className', 'class:list', 'classList', 'ngClass' },
+              lint = {
+                cssConflict = 'warning',
+                invalidApply = 'error',
+                invalidScreen = 'error',
+                invalidVariant = 'error',
+                invalidConfigPath = 'error',
+                invalidTailwindDirective = 'error',
+                recommendedVariantOrder = 'warning',
+              },
+              validate = true,
+            },
+          },
+        },
         -- pyright = {},
         -- rust_analyzer = {}, -- Handled by rustaceanvim
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
