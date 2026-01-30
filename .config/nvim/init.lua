@@ -5,6 +5,20 @@ vim.g.maplocalleader = ' '
 -- Nerd fonts
 vim.g.have_nerd_font = true
 
+-- Suppress lspconfig framework deprecation warnings (nvim 0.11+)
+-- Some plugins (tailwind-tools, etc.) still use require('lspconfig').server.setup()
+-- Remove this once plugins migrate to vim.lsp.config
+do
+  local orig_deprecate = vim.deprecate
+  ---@diagnostic disable-next-line: duplicate-set-field
+  vim.deprecate = function(name, alternative, version, plugin, backtrace)
+    if plugin == 'nvim-lspconfig' and name:find('lspconfig') then
+      return -- silence lspconfig framework warning
+    end
+    return orig_deprecate(name, alternative, version, plugin, backtrace)
+  end
+end
+
 -- Custom filetypes
 vim.filetype.add {
   extension = {
@@ -701,20 +715,17 @@ require('lazy').setup({
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = {},
         automatic_installation = false,
-        automatic_enable = false, -- Don't auto-enable LSP servers (stylua doesn't support --lsp anymore)
-        handlers = {
-          function(server_name)
-            local server = servers[server_name]
-            if not server then
-              return
-            end
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
+        automatic_enable = false,
       }
+
+      -- Neovim 0.11+ native LSP config API
+      for server_name, server_config in pairs(servers) do
+        server_config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server_config.capabilities or {})
+        vim.lsp.config(server_name, server_config)
+      end
+      vim.lsp.enable(vim.tbl_keys(servers))
     end,
   },
 

@@ -30,6 +30,7 @@ alias python='python3'
 alias vim='nvim'
 alias pp='pbcopy'
 alias claude='claude --allow-dangerously-skip-permissions'
+alias codex='codex --dangerously-bypass-approvals-and-sandbox --search'
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd

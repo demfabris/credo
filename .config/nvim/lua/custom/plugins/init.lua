@@ -269,6 +269,8 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
     ft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
     opts = {
+      -- Override default filetypes to use modern Neovim filetypes only
+      filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
       settings = {
         -- spawn additional tsserver instance to calculate diagnostics on it
         separate_diagnostic_server = true,
